@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3" // used by gorp ?
+	"os"
 )
 
 var dbmap = initDb()
@@ -37,11 +38,12 @@ func createArticle(title, body string) Article {
 	return article
 }
 
-func createSummary(repo, commit string) Summary {
+func createSummary(repo, commit string, pullRequest int64) Summary {
 	summary := Summary{
-		Created:  time.Now().UnixNano(),
-		RepoID:   repo,
-		Commit:   commit,
+		RepoID:        repo,
+		Commit:        commit,
+		PullRequestID: pullRequest,
+		Created:       time.Now().UnixNano(),
 	}
 
 	err := dbmap.Insert(&summary)
@@ -57,12 +59,22 @@ func getArticle(articleID int) Article {
 }
 
 func initDb() *gorp.DbMap {
+
+	// for now we will delete the db.sqlite file
+	rmerr := os.Remove("db.sqlite3")
+
+	if rmerr != nil {
+		checkErr(rmerr, "Removing previous database file failed.")
+		panic(rmerr)
+	}
+
 	db, err := sql.Open("sqlite3", "db.sqlite3")
 	checkErr(err, "sql.Open failed")
 
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
 
 	dbmap.AddTableWithName(Article{}, "articles").SetKeys(true, "ID")
+	dbmap.AddTableWithName(Summary{}, "summaries").SetKeys(true, "SummaryID")
 
 	err = dbmap.CreateTablesIfNotExists()
 	checkErr(err, "Create tables failed")
