@@ -37,6 +37,18 @@ func createArticle(title, body string) Article {
 	return article
 }
 
+func createSummary(repo, commit string) Summary {
+	summary := Summary{
+		Created:  time.Now().UnixNano(),
+		RepoID:   repo,
+		Commit:   commit,
+	}
+
+	err := dbmap.Insert(&summary)
+	checkErr(err, "Insert Summary failed")
+	return summary
+}
+
 func getArticle(articleID int) Article {
 	article := Article{}
 	err := dbmap.SelectOne(&article, "select * from articles where article_id=?", articleID)
