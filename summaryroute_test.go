@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -11,40 +10,46 @@ import (
 	"testing"
 )
 
-const TestToken = "HELLO"
-
-func TestSummaryPostGetsId(t *testing.T) {
+func postJSONToHandler(handler gin.HandlerFunc, data interface{}, responseData interface{}) error {
+	route := "/arbitrary-route"
+	// set up new gin
 	router := gin.New()
-	router.POST("/summary", SummaryPost)
+	router.POST(route, handler)
 
-	repoID := "ZombieHippie/testing"
-	commit := "577cf826d6a622fc62d9cec456b14bdb2a3664bf"
-	var pr int64 = 4
+	jsonData, _ := json.Marshal(data)
 
-	data, _ := json.Marshal(gin.H{
-		"RepoID":        repoID,
-		"Commit":        commit,
-		"PullRequestID": pr,
-	})
+	req, reqerr := http.NewRequest("POST", route, bytes.NewBuffer(jsonData))
 
-	req, _ := http.NewRequest("POST", "/summary", bytes.NewBuffer(data))
-	req.Header.Add("Authorization", fmt.Sprintf("auth_token=\"%s\"", TestToken))
+	if reqerr != nil {
+		return reqerr
+	}
+
 	req.Header.Add("Content-Type", "application/json")
 
 	resp := httptest.NewRecorder()
 	router.ServeHTTP(resp, req)
 
-	fmt.Println(resp.Body.String())
-	respData := SummaryPostResult{}
-	err := json.Unmarshal([]byte(resp.Body.String()), &respData)
+	return json.Unmarshal([]byte(resp.Body.String()), &responseData)
+}
 
-	fmt.Println(resp.Body.Bytes(), respData)
+func TestSummaryPostGetsId(t *testing.T) {
+	repoID := "ZombieHippie/testing"
+	commit := "577cf826d6a622fc62d9cec456b14bdb2a3664bf"
+	pr := int64(4)
+
+	respData := SummaryPostResult{}
+
+	err := postJSONToHandler(SummaryPost, gin.H{
+		"RepoID":        repoID,
+		"Commit":        commit,
+		"PullRequestID": pr,
+	}, &respData)
 
 	respSummary := respData.Summary
+
 	if err != nil {
 		t.Error(err)
 	} else {
-		fmt.Println(respSummary)
 		assert.Equal(t, commit, respSummary.Commit)
 		assert.Equal(t, pr, respSummary.PullRequestID)
 		assert.Equal(t, repoID, respSummary.RepoID)
