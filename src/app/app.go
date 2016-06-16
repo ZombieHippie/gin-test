@@ -22,7 +22,7 @@ func Setup(db *gorm.DB) *gin.Engine {
 	router := gin.Default()
 
 	// Create summary
-	router.POST("/webhook", func(c *gin.Context) {
+	router.POST("/summary/webhook", func(c *gin.Context) {
 		postWebhook(c, db)
 	})
 
