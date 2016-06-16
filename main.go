@@ -7,9 +7,12 @@ import (
 
 	"gopkg.in/gorp.v1"
 
+	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3" // used by gorp ?
+	"net/http"
 	"os"
+	"strconv"
 )
 
 var dbmap = initDb()
@@ -19,11 +22,68 @@ func main() {
 	defer dbmap.Db.Close()
 
 	router := gin.Default()
+
 	router.GET("/articles", ArticlesList)
 	router.POST("/articles", ArticlePost)
 	router.GET("/articles/:id", ArticlesDetail)
+
+	// Summary get by ID
+	router.GET("/summary/:id", func(c *gin.Context) {
+		summaryID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusOK, SummaryResult{
+				Result: fmt.Sprintf("Summary '%s' is not an integer.", c.Param("id")),
+			})
+		}
+		status, result := SummaryGet(Summary{
+			SummaryID: int64(summaryID),
+		})
+		c.JSON(status, result)
+	})
+
+	// Summary get by ID
+	router.DELETE("/summary/:id", func(c *gin.Context) {
+		summaryID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusOK, SummaryResult{
+				Result: fmt.Sprintf("Summary '%s' is not an integer.", c.Param("id")),
+			})
+		}
+		status, result := SummaryGet(Summary{
+			SummaryID: int64(summaryID),
+		})
+		c.JSON(status, result)
+	})
+
+	// Create summary
+	router.POST("/summary", func(c *gin.Context) {
+		var json Summary
+
+		c.Bind(&json) // This will infer what binder to use depending on the content-type header.
+		status, result := SummaryPost(json)
+		c.JSON(status, result)
+	})
+
+	// Summary find by repo/commit/pr
+	router.POST("/find/summary", func(c *gin.Context) {
+		var json Summary
+
+		c.Bind(&json) // This will infer what binder to use depending on the content-type header.
+		status, result := SummaryGet(json)
+		c.JSON(status, result)
+	})
+
 	router.Static("/public", "./public")
 	router.Run(":8080")
+}
+
+// SummaryPostHandler accepts a post request to create an article
+func SummaryPostHandler(c *gin.Context) {
+	var json Summary
+
+	c.Bind(&json) // This will infer what binder to use depending on the content-type header.
+	status, result := SummaryPost(json)
+	c.JSON(status, result)
 }
 
 func createArticle(title, body string) Article {
@@ -36,19 +96,6 @@ func createArticle(title, body string) Article {
 	err := dbmap.Insert(&article)
 	checkErr(err, "Insert failed")
 	return article
-}
-
-func createSummary(repo, commit string, pullRequest int64) Summary {
-	summary := Summary{
-		RepoID:        repo,
-		Commit:        commit,
-		PullRequestID: pullRequest,
-		Created:       time.Now().UnixNano(),
-	}
-
-	err := dbmap.Insert(&summary)
-	checkErr(err, "Insert Summary failed")
-	return summary
 }
 
 func getArticle(articleID int) Article {

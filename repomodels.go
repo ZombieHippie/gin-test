@@ -2,7 +2,7 @@ package main
 
 // Repository is parent to almost every other model
 type Repository struct {
-	ID     string `db:"repo_id"`
+	ID     string // `db:"repo_id"`
 	ACL    string
 	Owner  string
 	Name   string
@@ -15,6 +15,9 @@ type Summary struct {
 	RepoID        string `db:"repo_id"`
 	PullRequestID int64  `db:"pull_request_id"`
 	Commit        string
+	Message       string
+	Author        string
+	Success       bool
 	Created       int64
 }
 
