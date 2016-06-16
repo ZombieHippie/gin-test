@@ -2,6 +2,9 @@ package main
 
 import (
 	"time"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func createSummary(input Summary) Summary {
