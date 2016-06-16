@@ -3,13 +3,10 @@ package main
 import (
 	"log"
 
-	"fmt"
-	"github.com/gin-gonic/gin"
+	"github.com/ZombieHippie/test-gin/src/app"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3" // used by gorp ?
-	"net/http"
 	"os"
-	"strconv"
 )
 
 const removeOldDB = false

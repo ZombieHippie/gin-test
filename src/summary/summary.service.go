@@ -2,13 +2,12 @@ package summary
 
 import (
 	"github.com/ZombieHippie/test-gin/src/repo"
-	"github.com/ZombieHippie/test-gin/src/report"
 	"github.com/ZombieHippie/test-gin/src/shared"
 	"github.com/jinzhu/gorm"
 )
 
 // GetSummariesByPullRequest retrieves the the Summary by repo and pull request
-func GetSummariesByPullRequest(db *gorm.DB, repoID repo.RepoID, pr shared.PullRequest) (sums []Summary) {
+func GetSummariesByPullRequest(db *gorm.DB, repoID string, pr shared.PullRequest) (sums []Summary) {
 	var repo repo.Repository
 	db.First(&repo, repoID)
 	// Latest summary
@@ -31,7 +30,7 @@ func CreateSummary(db *gorm.DB, sum Summary) (bool, Summary) {
 	created := db.NewRecord(sum) // => returns `true` as primary key is blank
 
 	if !created {
-		return false
+		return false, sum
 	}
 
 	db.Create(&sum)

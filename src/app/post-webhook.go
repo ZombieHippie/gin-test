@@ -1,54 +1,67 @@
 package app
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/ZombieHippie/test-gin/src/repo"
 	"github.com/ZombieHippie/test-gin/src/shared"
 	"github.com/ZombieHippie/test-gin/src/summary"
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"net/http"
 )
 
-func postWebhook (c *gin.Context) {
+func postWebhook(c *gin.Context, db *gorm.DB) {
 	var json summary.Summary
 
 	c.Bind(&json) // This will infer what binder to use depending on the content-type header.
 
-	hasRepoName := !shared.IsZero(json.Repository.Name)
+	hasRepoName := !shared.IsZero(json.Repository.ID)
 
 	if !hasRepoName {
 		c.JSON(http.StatusBadRequest, webhookResp{
-			Message: "Error: No Repository.Name specified."
+			Message: "Error: No Repository.Name specified.",
 		})
 		return
 	}
 
 	json.Repository = repo.EnsureRepository(db, json.Repository)
 
-	hasCommit := !shared.IsZero(json.Commit)
-	hasCreated := !shared.IsZero(json.Created)
-	hasPullRequest := !shared.IsZero(json.PullRequestID)
+	var err string
 	hasArtifacts := len(json.Artifacts) > 0
-
-	var err error
 	if !hasArtifacts {
-		err = "No Artifacts present."
-	} else if !hasPullRequest {
-		err = "No PullRequestID specified."
-	} else if !hasCommit {
-		err = "No Commit SHA specified."
-	} else if !hasArtifacts {
-		err = "No Artifacts provided."
+		err += "No Artifacts present. "
 	}
 
-	if err != nil {
+	hasPullRequest := !shared.IsZero(json.PullRequestID)
+	if !hasPullRequest {
+		err += "No PullRequestID specified. "
+	}
+
+	hasCommit := !shared.IsZero(json.Commit)
+	if !hasCommit {
+		err += "No Commit SHA specified. "
+	}
+
+	hasCreated := !shared.IsZero(json.Created)
+	if !hasCreated {
+		err += "No Created provided. "
+	}
+
+	if err != "" {
 		c.JSON(http.StatusBadRequest, webhookResp{
-			Message: "Error: " + string(err)
+			Message: "Error: " + string(err),
 		})
 		return
 	}
 
-	created, result := summary.CreateSummary(json)
-	
-	status := created ? http.StatusCreated : http.StatusInternalServerError
+	created, result := summary.CreateSummary(db, json)
+
+	var status int
+	if created {
+		status = http.StatusCreated
+	} else {
+		status = http.StatusInternalServerError
+	}
+
 	c.JSON(status, webhookResp{
 		Message: "Successfully created summary.",
 		Summary: result,
