@@ -1,13 +1,13 @@
 package repo
 
-import "github.com/jinzhu/gorm"
+import "time"
 
 // Repository is parent to almost every other model
 type Repository struct {
-	gorm.Model
-	ID     string
-	ACL    string
-	Owner  string
-	Name   string
-	Active bool
+	ID        string `gorm:"primary_key"` // "ZombieHippie/hello"
+	ACL       string // Who has access?
+	Active    bool
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
 }
