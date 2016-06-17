@@ -1,0 +1,8 @@
+version: '2'
+services:
+  artsy-host:
+    image: colelawr/artsy-host
+    ports:
+      - "4334:8080"
+    volumes:
+      - ./drone-data:/data
