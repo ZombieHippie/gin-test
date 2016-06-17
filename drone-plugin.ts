@@ -83,10 +83,14 @@ function createArtifact(filepath: string, label: string, filename: string, isBin
   return art
 }
 
+import { inspect } from "util"
+
 plugin.parse().then((params: DroneParams) => {
   // gets plugin-specific parameters defined in
   // the .drone.yml file
   const vargs = params.vargs as Vargs
+
+  console.log("params: DroneParams = ", inspect(params, false, 8, true))
 
   postSummary(params, vargs)
 })
