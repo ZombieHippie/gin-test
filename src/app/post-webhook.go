@@ -45,11 +45,6 @@ func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 		err += "No BranchID specified. "
 	}
 
-	hasPullRequest := !shared.IsZero(json.PullRequestID)
-	if !hasPullRequest {
-		err += "No PullRequestID specified. "
-	}
-
 	hasBuild := !shared.IsZero(json.BuildID)
 	if !hasBuild {
 		err += "No BuildID specified. "

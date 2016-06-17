@@ -35,7 +35,8 @@ function postSummary(p: DroneParams, vargs: Vargs) {
     })
 
     const summary: Summary = {
-      Branch: p.build.branch,
+      BranchID: p.build.branch,
+      BuildID: p.build.number,
       Commit: p.build.commit,
       Author: p.build.author,
       Message: p.build.message,

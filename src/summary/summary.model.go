@@ -10,12 +10,11 @@ import (
 // Summary is a common object for reports to point at
 type Summary struct {
 	gorm.Model
-	Repository    repo.Repository
-	BranchID      string
-	PullRequestID int
-	BuildID       int
-	Artifacts     []artifact.Artifact
-	Commit        string
+	Repository repo.Repository
+	BranchID   string
+	BuildID    int
+	Artifacts  []artifact.Artifact
+	Commit     string
 
 	Message string
 	Author  string

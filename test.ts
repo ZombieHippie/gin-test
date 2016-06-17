@@ -44,7 +44,6 @@ const arts: Artifact[] = [
 for (var i = 0; i < 5; i++) {
   const summary: Summary = {
     BranchID: "feature/hello",
-    PullRequestID: 4,
     BuildID: i,
     Commit: "962c4b831f447bccd8ab4185a4898d41833d91d3",
     Author: "Cole R Lawrence <colelawr@gmail.com>",
