@@ -12,3 +12,6 @@ ignore
 *.sqlite3
 debug
 data
+
+# go vendor
+server/vendor

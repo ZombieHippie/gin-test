@@ -7,3 +7,6 @@ data
 
 # development files
 Makefile
+
+# go vendor
+vendor
