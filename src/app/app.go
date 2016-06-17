@@ -14,12 +14,12 @@ type summaryListResp struct {
 }
 
 // Setup creates our router and returns it
-func Setup(db *gorm.DB) *gin.Engine {
+func Setup(db *gorm.DB, savedir string) *gin.Engine {
 	router := gin.Default()
 
 	// Create summary
 	router.POST("/summary/webhook", func(c *gin.Context) {
-		postWebhook(c, db)
+		postWebhook(c, db, savedir)
 	})
 
 	router.GET("/summary/list", func(c *gin.Context) {

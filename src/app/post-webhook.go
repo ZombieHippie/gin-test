@@ -6,7 +6,6 @@ import (
 	"github.com/ZombieHippie/test-gin/src/summary"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"

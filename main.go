@@ -19,7 +19,7 @@ func main() {
 
 	db := initDb()
 	defer db.Close()
-	router := app.Setup(db)
+	router := app.Setup(db, datapath)
 	router.Run(":8080")
 }
 
