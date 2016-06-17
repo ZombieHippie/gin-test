@@ -11,3 +11,4 @@ ignore
 # Database dumps
 *.sqlite3
 debug
+data

@@ -6,8 +6,12 @@ import (
 	"github.com/ZombieHippie/test-gin/src/summary"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path"
+	"strconv"
 )
 
 type webhookResp struct {
@@ -15,12 +19,10 @@ type webhookResp struct {
 	Summary summary.Summary
 }
 
-func postWebhook(c *gin.Context, db *gorm.DB) {
+func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 	var json summary.Summary
 
 	c.Bind(&json) // This will infer what binder to use depending on the content-type header.
-
-	log.Println(json)
 
 	hasRepoName := !shared.IsZero(json.Repository.ID)
 
@@ -59,6 +61,31 @@ func postWebhook(c *gin.Context, db *gorm.DB) {
 			Message: "Error: " + string(err),
 		})
 		return
+	}
+
+	// Save files if length longer than 255 chars
+	for _, art := range json.Artifacts {
+		contents, err := art.ReadFile()
+		log.Println(contents, err)
+		if len(contents) >= 255 {
+			// Somehow make sure that this is not the same file
+			filepath := path.Join(savedir, json.Repository.ID, json.Commit, art.Label)
+
+			// test different paths, file.txt, file.1.txt, file.2.txt etc
+			for existsSuffix := 0; existsSuffix < 100; existsSuffix++ {
+				testpath := filepath
+				ext := path.Ext(testpath)
+				if existsSuffix > 0 {
+					testpath = testpath[0:len(testpath)-len(ext)] + "." + strconv.Itoa(existsSuffix) + ext
+				}
+				if _, err := os.Stat(testpath); os.IsNotExist(err) {
+					filepath = testpath
+					break
+				}
+			}
+
+			art.SaveIntoFile(filepath)
+		}
 	}
 
 	created, result := summary.CreateSummary(db, json)
