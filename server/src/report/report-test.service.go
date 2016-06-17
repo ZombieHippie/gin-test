@@ -1,9 +1,9 @@
 package report
 
 import (
-	"github.com/ZombieHippie/test-gin/src/repo"
-	"github.com/ZombieHippie/test-gin/src/shared"
-	"github.com/ZombieHippie/test-gin/src/summary"
+	"github.com/ZombieHippie/test-gin/server/src/repo"
+	"github.com/ZombieHippie/test-gin/server/src/shared"
+	"github.com/ZombieHippie/test-gin/server/src/summary"
 	"github.com/jinzhu/gorm"
 )
 

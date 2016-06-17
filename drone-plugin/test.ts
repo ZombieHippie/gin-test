@@ -1,7 +1,7 @@
 /// <reference path="./typings/index.d.ts" />
-import { UploadSummary } from "./src/app/upload-summary"
-import { Summary } from "./src/summary/summary.model"
-import { Artifact } from "./src/artifact/artifact.model"
+import { UploadSummary } from "./lib-ts/app/upload-summary"
+import { Summary } from "./lib-ts/summary/summary.model"
+import { Artifact } from "./lib-ts/artifact/artifact.model"
 
 const host = 'localhost:8080'
 
@@ -21,9 +21,9 @@ const lintReport: Artifact = {
   Failed: 0,
 }
 const testReport: Artifact = {
-  FileContents: readFileSync('./.editorconfig', 'utf8'),
+  FileContents: readFileSync('./drone-plugin.ts', 'utf8'),
   IsBinary: false,
-  FileName: "unittests",
+  FileName: "unit",
   Data: `{
     "pass": 12,
     "fail": 0,

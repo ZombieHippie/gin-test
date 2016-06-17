@@ -1,8 +1,8 @@
 package summary
 
 import (
-	"github.com/ZombieHippie/test-gin/src/artifact"
-	"github.com/ZombieHippie/test-gin/src/repo"
+	"github.com/ZombieHippie/test-gin/server/src/artifact"
+	"github.com/ZombieHippie/test-gin/server/src/repo"
 	"github.com/jinzhu/gorm"
 	"time"
 )

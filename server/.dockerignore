@@ -1,0 +1,9 @@
+# OS files
+.DS_Store
+
+# Database dumps
+debug
+data
+
+# development files
+Makefile

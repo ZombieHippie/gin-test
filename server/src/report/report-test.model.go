@@ -1,7 +1,7 @@
 package report
 
 import (
-	"github.com/ZombieHippie/test-gin/src/summary"
+	"github.com/ZombieHippie/test-gin/server/src/summary"
 	"github.com/jinzhu/gorm"
 )
 

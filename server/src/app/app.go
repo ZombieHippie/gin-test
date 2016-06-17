@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/ZombieHippie/test-gin/src/summary"
+	"github.com/ZombieHippie/test-gin/server/src/summary"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"net/http"

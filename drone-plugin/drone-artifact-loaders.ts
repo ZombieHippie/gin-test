@@ -1,4 +1,4 @@
-import { Artifact } from "./src/artifact/artifact.model"
+import { Artifact } from "./lib-ts/artifact/artifact.model"
 
 // loaders for applying additional information based on label
 const Loaders: { [label: string]: (art: Artifact) => void } = {

@@ -1,0 +1,10 @@
+# node js
+node_modules
+typings
+
+# OS files
+.DS_Store
+
+# test files
+large-image-test.jpg
+test.ts

@@ -1,11 +1,11 @@
 .PHONY: all install test docker
 
-IMAGE ?= plugins/drone-test-gin
+IMAGE ?= colelawr/artsy-host
 
 all: install test
 
 install:
-	npm install --quiet
+	go get
 
 test:
 	@echo "Currently we don't provide test cases!"

@@ -8,9 +8,9 @@ const plugin = new Drone.Plugin()
 import path = require('path')
 import { readFileSync } from "fs"
 
-import { UploadSummary } from "./src/app/upload-summary"
-import { Summary } from "./src/summary/summary.model"
-import { Artifact } from "./src/artifact/artifact.model"
+import { UploadSummary } from "./lib-ts/app/upload-summary"
+import { Summary } from "./lib-ts/summary/summary.model"
+import { Artifact } from "./lib-ts/artifact/artifact.model"
 import { Loaders } from "./drone-artifact-loaders"
 
 

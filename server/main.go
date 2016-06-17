@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/ZombieHippie/test-gin/src/app"
-	"github.com/ZombieHippie/test-gin/src/artifact"
-	"github.com/ZombieHippie/test-gin/src/repo"
-	"github.com/ZombieHippie/test-gin/src/summary"
+	"github.com/ZombieHippie/test-gin/server/src/app"
+	"github.com/ZombieHippie/test-gin/server/src/artifact"
+	"github.com/ZombieHippie/test-gin/server/src/repo"
+	"github.com/ZombieHippie/test-gin/server/src/summary"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3" // used by gorp ?
 	"os"
