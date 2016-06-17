@@ -6,13 +6,21 @@ import (
 	"github.com/ZombieHippie/test-gin/src/summary"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"log"
 	"net/http"
 )
+
+type webhookResp struct {
+	Message string
+	Summary summary.Summary
+}
 
 func postWebhook(c *gin.Context, db *gorm.DB) {
 	var json summary.Summary
 
 	c.Bind(&json) // This will infer what binder to use depending on the content-type header.
+
+	log.Println(json)
 
 	hasRepoName := !shared.IsZero(json.Repository.ID)
 

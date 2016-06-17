@@ -4,6 +4,9 @@ import (
 	"log"
 
 	"github.com/ZombieHippie/test-gin/src/app"
+	"github.com/ZombieHippie/test-gin/src/artifact"
+	"github.com/ZombieHippie/test-gin/src/repo"
+	"github.com/ZombieHippie/test-gin/src/summary"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3" // used by gorp ?
 	"os"
@@ -29,7 +32,14 @@ func initDb() *gorm.DB {
 	}
 
 	db, err := gorm.Open("sqlite3", "db.sqlite3")
+	db.LogMode(true)
 	checkErr(err, "gorm.Open failed")
+
+	db.CreateTable(
+		new(repo.Repository),
+		new(summary.Summary),
+		new(artifact.Artifact),
+	)
 
 	return db
 }

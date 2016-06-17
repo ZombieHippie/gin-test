@@ -7,11 +7,6 @@ import (
 	"net/http"
 )
 
-type webhookResp struct {
-	Message string
-	Summary summary.Summary
-}
-
 type summaryListResp struct {
 	Message   string
 	Summaries []summary.Summary

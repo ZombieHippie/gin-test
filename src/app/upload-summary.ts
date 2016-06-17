@@ -1,40 +1,34 @@
 /// <reference path="../../typings/index.d.ts" />
 import http = require("http")
-import querystring = require("querystring")
+import request = require("request")
 import { Summary } from "../summary/summary.model"
 
-function UploadSummary(host: string, auth: string, summary: Summary, handler: (err, summary: Summary) => any) {
-  let postData = querystring.stringify(summary)
-  let [hostname, port] = host.split(':')
-  let requestData = {
-    host: hostname,
-    port: parseInt(port),
-    path: '/summary/webhook',
+export interface UploadSummaryResponse {
+	Message: string
+	Summary: Summary
+}
+
+const uploadPath = '/summary/webhook'
+const protocol = 'http://'
+
+function UploadSummary(host: string, auth: string, summary: Summary, handler: (err, response: UploadSummaryResponse) => any) {
+  let postData = summary
+  let requestData: request.Options = {
+    url: protocol + host + uploadPath,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(postData),
       'Authorization-Key': auth,
     },
+    json: true,
+    body: postData,
   }
 
-  let postReq = http.request(requestData, (response) => {
-    if (response.statusCode < 200 || response.statusCode > 299) {
-      handler(Error("Error returned from server"), null)
-      return
-    } 
-    response.setEncoding('utf8')
-    let responseBody = ""
-    response.on('data', (chunk) => {
-        responseBody += chunk.toString()
-    })
-    response.on('end', () => {
-      handler(null, JSON.parse(responseBody))
-    })
-  })
+  request(requestData, (err, response, body) => {
+    console.log(err, body)
 
-  postReq.write(postData)
-  postReq.end()
+    handler(err, body)
+    
+  })
 }
 
 export { UploadSummary }

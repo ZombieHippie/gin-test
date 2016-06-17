@@ -20,8 +20,3 @@ type Summary struct {
 	Success       bool
 	Created       time.Time
 }
-
-// TableName sets Summary's table name to be `summaries``
-func (Summary) TableName() string {
-	return "summaries"
-}
