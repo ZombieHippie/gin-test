@@ -65,10 +65,15 @@ func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 	// Save files if length longer than 255 chars
 	for _, art := range json.Artifacts {
 		contents, err := art.ReadFile()
-		log.Println(contents, err)
+
+		if err != nil {
+			log.Fatalln(err)
+			continue
+		}
+
 		if len(contents) >= 255 {
 			// Somehow make sure that this is not the same file
-			filepath := path.Join(savedir, json.Repository.ID, json.Commit, art.Label)
+			filepath := path.Join(savedir, json.Repository.ID, json.Commit, art.FileName)
 
 			// test different paths, file.txt, file.1.txt, file.2.txt etc
 			for existsSuffix := 0; existsSuffix < 100; existsSuffix++ {

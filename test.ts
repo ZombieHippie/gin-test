@@ -1,13 +1,17 @@
-
+/// <reference path="./typings/index.d.ts" />
 import { UploadSummary } from "./src/app/upload-summary"
 import { Summary } from "./src/summary/summary.model"
 import { Artifact } from "./src/artifact/artifact.model"
 
 const host = 'localhost:8080'
 
+import { readFileSync } from "fs"
+
 
 const lintReport: Artifact = {
-  FileContents: `<xml></xml>`,
+  FileContents: readFileSync('./large-image-test.jpg', 'base64'),
+  IsBinary: true,
+  FileName: "lint.jpg",
   Data: `{
     "error": 0,
     "warning": 4
@@ -17,7 +21,9 @@ const lintReport: Artifact = {
   Failed: 0,
 }
 const testReport: Artifact = {
-  FileContents: `<xml></xml>`,
+  FileContents: readFileSync('./.editorconfig', 'utf8'),
+  IsBinary: false,
+  FileName: "unittests",
   Data: `{
     "pass": 12,
     "fail": 0,

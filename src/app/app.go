@@ -34,5 +34,8 @@ func Setup(db *gorm.DB, savedir string) *gin.Engine {
 
 	router.Static("/public", "./public")
 
+	// indexed files
+	router.StaticFS("/data", gin.Dir("./data", true))
+
 	return router
 }

@@ -25,7 +25,7 @@ func main() {
 
 func initDb() *gorm.DB {
 
-	dbfilepath := datapath + "db.sqlite"
+	dbfilepath := datapath + "db.sqlite3"
 
 	err := os.MkdirAll(datapath, 0777)
 	checkErr(err, "Failed to create datapath.")
