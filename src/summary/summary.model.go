@@ -14,7 +14,7 @@ type Summary struct {
 	Repository    repo.Repository
 	PullRequestID shared.PullRequest
 	Artifacts     []artifact.Artifact
-	Commit        shared.Commit
+	Commit        string
 	Message       string
 	Author        string
 	Success       bool

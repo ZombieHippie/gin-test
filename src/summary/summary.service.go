@@ -4,7 +4,6 @@ import (
 	"github.com/ZombieHippie/test-gin/src/repo"
 	"github.com/ZombieHippie/test-gin/src/shared"
 	"github.com/jinzhu/gorm"
-	"log"
 )
 
 // GetSummariesByPullRequest retrieves the the Summary by repo and pull request
@@ -22,12 +21,11 @@ func GetSummariesByPullRequest(db *gorm.DB, repoID string, pr shared.PullRequest
 }
 
 // GetAllSummaries retrieves all the Summaries
-func GetAllSummaries(db *gorm.DB) []Summary {
+func GetAllSummaries(db *gorm.DB) ([]Summary, int) {
 	var sums = make([]Summary, 16)
 	var count int
-	db.Find(&sums).Count(count)
-	log.Println(sums, count)
-	return sums
+	db.Find(&sums).Count(&count)
+	return sums, count
 }
 
 // CreateSummary inserts a Summary into the database

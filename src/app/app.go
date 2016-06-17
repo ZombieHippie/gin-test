@@ -10,6 +10,7 @@ import (
 type summaryListResp struct {
 	Message   string
 	Summaries []summary.Summary
+	Count     int
 }
 
 // Setup creates our router and returns it
@@ -22,11 +23,12 @@ func Setup(db *gorm.DB) *gin.Engine {
 	})
 
 	router.GET("/summary/list", func(c *gin.Context) {
-		sums := summary.GetAllSummaries(db)
+		sums, count := summary.GetAllSummaries(db)
 
 		c.JSON(http.StatusOK, summaryListResp{
-			Summaries: sums,
 			Message:   "Successfully retrieved summaries.",
+			Summaries: sums,
+			Count:     count,
 		})
 	})
 

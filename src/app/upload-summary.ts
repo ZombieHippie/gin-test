@@ -6,6 +6,7 @@ import { Summary } from "../summary/summary.model"
 export interface UploadSummaryResponse {
 	Message: string
 	Summary: Summary
+  Count: number
 }
 
 const uploadPath = '/summary/webhook'
@@ -24,10 +25,7 @@ function UploadSummary(host: string, auth: string, summary: Summary, handler: (e
   }
 
   request(requestData, (err, response, body) => {
-    console.log(err, body)
-
     handler(err, body)
-    
   })
 }
 
