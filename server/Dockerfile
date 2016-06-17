@@ -12,11 +12,10 @@ RUN apk update && \
     git && \ 
   rm -rf /var/cache/apk/*
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
-COPY ./server /usr/src/app/
+ADD server /
 
 EXPOSE 8080
 
-CMD ["./server"]
+CMD ["/server"]
