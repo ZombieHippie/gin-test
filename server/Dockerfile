@@ -1,22 +1,19 @@
-FROM alpine:3.3
+# Docker image for the Artsy-Host
+#
+#     cd $GOPATH/src/github.com/ZombieHippie/test-gin/server
+#     make deps build
+#     docker build --rm=true -t colelawr/artsy-host .
+
+FROM alpine:3.2
 
 RUN apk update && \
   apk add \
     ca-certificates \
     git \
-    nodejs && \
-  rm -rf \
-    /var/cache/apk/*
+  rm -rf /var/cache/apk/*
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+ADD server /bin/
 
-# Install app dependencies
-COPY package.json /usr/src/app/
-RUN npm install
+EXPOSE 8080
 
-# Bundle app source
-COPY . /usr/src/app
-
-ENTRYPOINT ["npm", "start"]
+CMD ["/bin/server"]

@@ -12,3 +12,7 @@ ignore
 *.sqlite3
 debug
 data
+
+# built go files
+server/server
+server/artsy-host
