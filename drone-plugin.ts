@@ -62,7 +62,7 @@ function postSummary(p: DroneParams, vargs: Vargs) {
       console.log(resp.Summary.Artifacts.map((art) => art.FileContents).join("\n"))
     })
   } else {
-    console.log("Parameter missing: Server host");
+    console.log("Parameter missing: Server host")
     process.exit(1)
   }  
 }
@@ -83,3 +83,10 @@ function createArtifact(filepath: string, label: string, filename: string, isBin
   return art
 }
 
+plugin.parse().then((params: DroneParams) => {
+  // gets plugin-specific parameters defined in
+  // the .drone.yml file
+  const vargs = params.vargs as Vargs
+
+  postSummary(params, vargs)
+})
