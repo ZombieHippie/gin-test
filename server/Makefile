@@ -13,7 +13,7 @@ clean:
 	go clean -i ./...
 
 deps:
-	go get -t ./...
+	go get
 
 fmt:
 	go fmt $(PACKAGES)
@@ -28,7 +28,7 @@ docker:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags '-s -w $(LDFLAGS)'
 	docker build --rm -t $(IMAGE) .
 
-$(EXECUTABLE): $(wildcard *.go)
+$(EXECUTABLE): $(wildcard main.go)
 	go build -ldflags '-s -w $(LDFLAGS)'
 
 build: $(EXECUTABLE)
