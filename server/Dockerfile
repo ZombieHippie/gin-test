@@ -9,7 +9,7 @@ FROM alpine:3.2
 RUN apk update && \
   apk add \
     ca-certificates \
-    git \
+    git && \ 
   rm -rf /var/cache/apk/*
 
 ADD server /bin/
