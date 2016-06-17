@@ -10,17 +10,25 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3" // used by gorp ?
 	"os"
+	"strings"
 )
 
 const removeOldDB = false
 const datapath = "data/"
 
 func main() {
+	port := ":8080"
+	for _, e := range os.Environ() {
+		pair := strings.Split(e, "=")
+		if pair[0] == "PORT" {
+			port = ":" + pair[1]
+		}
+	}
 
 	db := initDb()
 	defer db.Close()
 	router := app.Setup(db, datapath)
-	router.Run(":8080")
+	router.Run(port)
 }
 
 func initDb() *gorm.DB {
