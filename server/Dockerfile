@@ -13,10 +13,10 @@ RUN apk update && \
   rm -rf /var/cache/apk/*
 
 RUN mkdir -p /usr/src/app
-
 WORKDIR /usr/src/app
-COPY ./server /bin/
+
+COPY ./server /usr/src/app/
 
 EXPOSE 8080
 
-CMD ["/bin/server"]
+CMD ["./server"]
