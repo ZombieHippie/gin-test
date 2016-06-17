@@ -40,21 +40,26 @@ const arts: Artifact[] = [
   testReport
 ]
 
-const summary: Summary = {
-  PullRequestID: 1,
-  Commit: "962c4b831f447bccd8ab4185a4898d41833d91d3",
-  Author: "Cole R Lawrence <colelawr@gmail.com>",
-  Message: "Fix all golang compilation errors",
-  Artifacts: arts,
-  Success: true,
-  Created: new Date(),
-  Repository: {
-    ID: "ZombieHippie/test-gin",
-    ACL: "user:ZombieHippie",
-    Active: true
-  }
-}
 
-UploadSummary(host, 'authy', summary, (err, summary) => {
-  console.log(err, summary)
-})
+for (var i = 0; i < 5; i++) {
+  const summary: Summary = {
+    BranchID: "feature/hello",
+    PullRequestID: 4,
+    BuildID: i,
+    Commit: "962c4b831f447bccd8ab4185a4898d41833d91d3",
+    Author: "Cole R Lawrence <colelawr@gmail.com>",
+    Message: "Fix all golang compilation errors",
+    Artifacts: arts,
+    Success: true,
+    Created: new Date(),
+    Repository: {
+      ID: "ZombieHippie/test-gin",
+      ACL: "user:ZombieHippie",
+      Active: true
+    }
+  }
+
+  UploadSummary(host, 'authy', summary, (err, summary) => {
+    console.log(err, summary)
+  })  
+}

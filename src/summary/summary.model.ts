@@ -5,7 +5,9 @@ import { Artifact } from "../artifact/artifact.model"
 interface Summary {
   ID?: number // Assigned by gorm
   Repository: Repository // Assign this yourself
-  PullRequestID: number // "user:ZombieHippie,org:DryClean"
+  BuildID: number // 2
+  PullRequestID: number // 5
+  BranchID: string // "feature/no-more-bugs"
   Artifacts: Artifact[] // Files you want to attach
   Commit: string // Commit hash
   Success: boolean

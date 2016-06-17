@@ -40,9 +40,19 @@ func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 		err += "No Artifacts present. "
 	}
 
+	hasBranch := !shared.IsZero(json.BranchID)
+	if !hasBranch {
+		err += "No BranchID specified. "
+	}
+
 	hasPullRequest := !shared.IsZero(json.PullRequestID)
 	if !hasPullRequest {
 		err += "No PullRequestID specified. "
+	}
+
+	hasBuild := !shared.IsZero(json.BuildID)
+	if !hasBuild {
+		err += "No BuildID specified. "
 	}
 
 	hasCommit := !shared.IsZero(json.Commit)
@@ -73,7 +83,7 @@ func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 
 		if len(contents) >= 255 {
 			// Somehow make sure that this is not the same file
-			filepath := path.Join(savedir, json.Repository.ID, json.Commit, art.FileName)
+			filepath := path.Join(savedir, json.Repository.ID, strconv.Itoa(json.BuildID), art.FileName)
 
 			// test different paths, file.txt, file.1.txt, file.2.txt etc
 			for existsSuffix := 0; existsSuffix < 100; existsSuffix++ {

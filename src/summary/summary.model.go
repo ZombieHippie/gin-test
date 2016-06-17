@@ -3,7 +3,6 @@ package summary
 import (
 	"github.com/ZombieHippie/test-gin/src/artifact"
 	"github.com/ZombieHippie/test-gin/src/repo"
-	"github.com/ZombieHippie/test-gin/src/shared"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -12,11 +11,14 @@ import (
 type Summary struct {
 	gorm.Model
 	Repository    repo.Repository
-	PullRequestID shared.PullRequest
+	BranchID      string
+	PullRequestID int
+	BuildID       int
 	Artifacts     []artifact.Artifact
 	Commit        string
-	Message       string
-	Author        string
-	Success       bool
-	Created       time.Time
+
+	Message string
+	Author  string
+	Success bool
+	Created time.Time
 }

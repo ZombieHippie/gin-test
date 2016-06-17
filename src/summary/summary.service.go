@@ -2,20 +2,19 @@ package summary
 
 import (
 	"github.com/ZombieHippie/test-gin/src/repo"
-	"github.com/ZombieHippie/test-gin/src/shared"
 	"github.com/jinzhu/gorm"
 )
 
-// GetSummariesByPullRequest retrieves the the Summary by repo and pull request
-func GetSummariesByPullRequest(db *gorm.DB, repoID string, pr shared.PullRequest) []Summary {
+// GetSummariesByBranch retrieves the the Summary by repo and pull request
+func GetSummariesByBranch(db *gorm.DB, repoID string, branchID string) []Summary {
 	var repo repo.Repository
 	db.First(&repo, repoID)
 
 	var sums = make([]Summary, 16)
 	// Latest summary
 	db.Where(&Summary{
-		PullRequestID: pr,
-		Repository:    repo,
+		BranchID:   branchID,
+		Repository: repo,
 	}).Order("summary_id").Find(&sums)
 	return sums
 }
