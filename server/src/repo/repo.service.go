@@ -12,7 +12,7 @@ func EnsureRepository(db *gorm.DB, given Repository) (repo Repository) {
 
 // GetAllRepositories retrieves all the Repositories
 func GetAllRepositories(db *gorm.DB) ([]Repository, int) {
-	var repos = make([]Repository, 16)
+	var repos []Repository
 	var count int
 	db.Find(&repos).Count(&count)
 	return repos, count

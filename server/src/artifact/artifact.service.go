@@ -7,7 +7,7 @@ import (
 
 // GetAllArtifacts retrieves all the Artifacts
 func GetAllArtifacts(db *gorm.DB) ([]Artifact, int) {
-	var arts = make([]Artifact, 16)
+	var arts []Artifact
 	var count int
 	db.Find(&arts).Count(&count)
 	return arts, count
@@ -15,7 +15,7 @@ func GetAllArtifacts(db *gorm.DB) ([]Artifact, int) {
 
 // GetArtifacts retrieves all the Artifacts created from buildID
 func GetArtifacts(db *gorm.DB, sum *summary.Summary) ([]Artifact, int) {
-	var arts = make([]Artifact, 16)
+	var arts []Artifact
 	var count int
 	db.Find(&arts, Artifact{
 		Summary: *sum,
