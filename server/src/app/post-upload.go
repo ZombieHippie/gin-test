@@ -49,7 +49,7 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 		return
 	}
 
-	uploadedArtifacts := make([]artifact.Artifact, 4)
+	var uploadedArtifacts []artifact.Artifact
 
 	// Save files if length longer than 255 chars
 	for _, art := range sumUp.Artifacts {
