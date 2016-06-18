@@ -1,7 +1,7 @@
 .PHONY: all clean deps fmt vet test docker
 
-EXECUTABLE ?= artsy-host
-IMAGE ?= colelawr/$(EXECUTABLE)
+EXECUTABLE = dryclean-host
+IMAGE = colelawr/$(EXECUTABLE)
 COMMIT ?= $(shell git rev-parse --short HEAD)
 
 LDFLAGS = -X "main.buildCommit=$(COMMIT)"

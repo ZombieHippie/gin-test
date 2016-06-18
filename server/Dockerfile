@@ -1,8 +1,8 @@
-# Docker image for the Artsy-Host
+# Docker image for the Dryclean-Host
 #
 #     cd $GOPATH/src/github.com/ZombieHippie/test-gin/server
 #     make deps build
-#     docker build --rm=true -t colelawr/artsy-host .
+#     docker build --rm=true -t colelawr/dryclean-host .
 
 FROM alpine:3.2
 
@@ -14,8 +14,8 @@ RUN apk update && \
 
 WORKDIR /usr/app
 
-ADD server /
+ADD dryclean-host /
 
 EXPOSE 8080
 
-CMD ["/server"]
+CMD ["/dryclean-host"]

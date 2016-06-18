@@ -17,4 +17,4 @@ data
 
 # built go files
 server/server
-server/artsy-host
+server/dryclean-host
