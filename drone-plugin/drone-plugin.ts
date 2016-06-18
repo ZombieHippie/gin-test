@@ -11,14 +11,12 @@ import { readFileSync } from "fs"
 import { UploadSummary } from "./lib-ts/app/upload-summary"
 import { SummaryUpload } from "./lib-ts/upload/summary-upload.model"
 import { ArtifactUpload } from "./lib-ts/upload/artifact-upload.model"
-import { Loaders } from "./drone-artifact-loaders"
 
 
 interface Vargs {
   host:         string // "art.company.com:8080",
   files:        VFile[]
-  auth?:        string // "authy",
-  loadersDir?:  string // ".config/drone-loaders"
+  auth?:        string // "authy"
 }
 
 interface VFile {
