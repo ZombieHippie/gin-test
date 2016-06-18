@@ -1,6 +1,6 @@
 
 import { Repository } from "../repo/repo.model"
-import { ArtifactUpload } from "../artifact/artifact-upload.model"
+import { ArtifactUpload } from "./artifact-upload.model"
 
 interface SummaryUpload {
   Repository: Repository // Assign this yourself

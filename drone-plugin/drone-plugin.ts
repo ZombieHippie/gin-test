@@ -9,34 +9,37 @@ import path = require('path')
 import { readFileSync } from "fs"
 
 import { UploadSummary } from "./lib-ts/app/upload-summary"
-import { Summary } from "./lib-ts/summary/summary.model"
-import { Artifact } from "./lib-ts/artifact/artifact.model"
+import { SummaryUpload } from "./lib-ts/upload/summary-upload.model"
+import { ArtifactUpload } from "./lib-ts/upload/artifact-upload.model"
 import { Loaders } from "./drone-artifact-loaders"
 
 
 interface Vargs {
-  host: string // "art.company.com:8080",
-  files: VFile[]
-  auth?: string // "authy",
-  loadersDir?: string // ".config/drone-loaders"
+  host:         string // "art.company.com:8080",
+  files:        VFile[]
+  auth?:        string // "authy",
+  loadersDir?:  string // ".config/drone-loaders"
 }
 
 interface VFile {
-  path: string // "stats.json", "coverage/Phantom*/index.html"
-  label: string // "webpack", "coverage"
-  filename?: string // "webpack.stats.json", "coverage.html"
-  binary?: boolean
+  path:           string // "stats.json", "coverage/Phantom*/index.html"
+  label:          string // "webpack", "coverage"
+  postprocessor?: string // "cobertura", "codestyle", etc
 }
 
 function postSummary(p: DroneParams, vargs: Vargs) {
   if (vargs.host) {
-    const arts = vargs.files.map<Artifact>((file: VFile) => {
+    const arts = vargs.files.map<ArtifactUpload>((file: VFile) => {
       let fullpath = shelljs.ls(path.join(p.workspace.path, file.path))[0]
-      file.filename = file.filename === "" ? file.label : file.filename
-      return createArtifact(fullpath, file.label, file.filename, !!file.binary)
+      return {
+        Label:          file.label,
+        LocalPath:      file.path,
+        Path:           fullpath,
+        PostProcessor:  file.postprocessor,
+      }
     })
 
-    const summary: Summary = {
+    const summary: SummaryUpload = {
       BranchID: p.build.branch,
       BuildID: p.build.number,
       Commit: p.build.commit,
@@ -59,28 +62,12 @@ function postSummary(p: DroneParams, vargs: Vargs) {
         process.exit(0)
       }
       console.log("Uploaded files:")
-      console.log(resp.Summary.Artifacts.map((art) => art.FileContents).join("\n"))
+      console.log(resp.Artifacts.map((art) => `  ${art.Label} (${art.Status}): ${art.Data}`).join("\n"))
     })
   } else {
     console.log("Parameter missing: Server host")
     process.exit(1)
   }  
-}
-
-function createArtifact(filepath: string, label: string, filename: string, isBinary: boolean): Artifact {
-  let art:Artifact =  {
-    FileContents: readFileSync(filepath, isBinary ? 'base64' : 'utf8'),
-    IsBinary: isBinary,
-    FileName: filename,
-    Data: '',
-    Label: label,
-    Passed: 1,
-    Failed: 0,
-  }
-  if (typeof Loaders[label] === 'function') {
-    Loaders[label](art)
-  }
-  return art
 }
 
 import { inspect } from "util"

@@ -4,7 +4,7 @@ import request = require("request")
 import fs = require('fs')
 import { Summary } from "../summary/summary.model"
 import { Artifact } from "../artifact/artifact.model"
-import { SummaryUpload } from "../summary/summary-upload.model"
+import { SummaryUpload } from "../upload/summary-upload.model"
 
 export interface UploadSummaryResponse {
 	Message: string
@@ -30,7 +30,11 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
   let uploadFiles: Attachments = {}
 
   summary.Artifacts.forEach((artUpload) => {
-    uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.Path)
+    // Note that we read from FullPath here
+    if (artUpload.FullPath == null || artUpload.FullPath.length === 0) {
+      artUpload.FullPath = artUpload.Path
+    }
+    uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.FullPath)
   })
 
   uploadFiles['SummaryUpload'] = JSON.stringify(summary)
