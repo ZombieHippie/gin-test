@@ -63,7 +63,7 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 		}
 
 		// Make sure that this is not the same file
-		r := regexp.MustCompile(`[^\w\-]+`)
+		r := regexp.MustCompile(`[^\w\-\.]+`)
 		safeFilename := r.ReplaceAllString(art.Label, "-")
 		filepath := path.Join(savedir, sumUp.Repository.ID, strconv.Itoa(sumUp.BuildID), safeFilename)
 
