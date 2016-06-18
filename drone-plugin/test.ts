@@ -31,10 +31,10 @@ const arts: ArtifactUpload[] = [
 ]
 
 
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 1; i++) {
   const summary: SummaryUpload = {
     BranchID: "feature/hello",
-    BuildID: i + 4,
+    BuildID: i + 1,
     Commit: i + "62c4b831f447bccd8ab4185a4898d41833d91d3",
     Author: "Cole R Lawrence <colelawr@gmail.com>",
     Message: i + " Fix all golang compilation errors",
