@@ -99,12 +99,10 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 		Success:    sumUp.Success,
 	}
 
-	db.NewRecord(&sum)
 	db.Create(&sum)
 
 	for _, art := range uploadedArtifacts {
 		art.Summary = sum
-		db.NewRecord(&art)
 		db.Create(&art)
 	}
 
