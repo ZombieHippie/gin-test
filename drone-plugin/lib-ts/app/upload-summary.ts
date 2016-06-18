@@ -13,35 +13,38 @@ export interface UploadSummaryResponse {
   Count: number
 }
 
+interface Attachments {
+  [localPath: string]: fs.ReadStream | string
+}
+
 interface UploadSummaryForm {
   SummaryUpload: SummaryUpload,
-  Attachments: { [localPath: string]: fs.ReadStream }
+  Attachments: Attachments
 }
 
 const uploadPath = '/summary/upload'
 const protocol = 'http://'
 
 function UploadSummary(host: string, auth: string, summary: SummaryUpload, handler: (err, response: UploadSummaryResponse) => any) {
-  let postData = summary
 
-  let formData = {
-    SummaryUpload: summary,
-    Attachments: {},
-  }
+  let uploadFiles: Attachments = {}
 
   summary.Artifacts.forEach((artUpload) => {
-    formData.Attachments[artUpload.Path] = fs.createReadStream(artUpload.Path)
+    uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.Path)
   })
+
+  uploadFiles['SummaryUpload'] = JSON.stringify(summary)
 
   let requestData: request.Options = {
     url: protocol + host + uploadPath,
+    method: 'POST',
     headers: {
       'Authorization-Key': auth,
     },
-    formData: formData
+    formData: uploadFiles,
   }
 
-  request.post(requestData, (err, response, body) => {
+  request(requestData, (err, response, body) => {
     handler(err, body)
   })
 }

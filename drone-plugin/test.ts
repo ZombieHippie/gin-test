@@ -10,17 +10,17 @@ import { readFileSync } from "fs"
 
 const coverageReport: ArtifactUpload = {
   Path:           './mocks/coverage-with-data.xml',
-  Label:          'Coverage',
+  Label:          'Coverage.xml',
   PostProcessor:  'cobertura'
 }
 const lintReport: ArtifactUpload = {
   Path:           './mocks/large-image-test.jpg',
-  Label:          'Surfing',
+  Label:          'Surfing.jpg',
   PostProcessor:  'image'
 }
 const testReport: ArtifactUpload = {
   Path:           './drone-plugin.ts',
-  Label:          'Unit Tests',
+  Label:          'Unit Tests.ts',
   PostProcessor:  'junit',
 }
 
@@ -34,7 +34,7 @@ const arts: ArtifactUpload[] = [
 for (var i = 0; i < 5; i++) {
   const summary: SummaryUpload = {
     BranchID: "feature/hello",
-    BuildID: i,
+    BuildID: i + 4,
     Commit: i + "62c4b831f447bccd8ab4185a4898d41833d91d3",
     Author: "Cole R Lawrence <colelawr@gmail.com>",
     Message: i + " Fix all golang compilation errors",

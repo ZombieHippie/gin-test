@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-const removeOldDB = false
+const removeOldDB = true
 const datapath = "data/"
 
 func main() {
@@ -34,16 +34,16 @@ func main() {
 func initDb() *gorm.DB {
 
 	dbfilepath := datapath + "db.sqlite3"
+	var err error
 
-	err := os.MkdirAll(datapath, 0777)
-	checkErr(err, "Failed to create datapath.")
 	// for now we will delete the db.sqlite file
 	if removeOldDB {
-
-		err = os.Remove(dbfilepath)
+		err = os.RemoveAll(datapath)
 		checkErr(err, "Removing previous database file failed.")
 
 	}
+	err = os.MkdirAll(datapath, 0777)
+	checkErr(err, "Failed to create datapath.")
 
 	db, err := gorm.Open("sqlite3", dbfilepath)
 	db.LogMode(true)
