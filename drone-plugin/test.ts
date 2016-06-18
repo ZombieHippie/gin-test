@@ -31,7 +31,7 @@ const arts: ArtifactUpload[] = [
 ]
 
 
-for (var i = 0; i < 1; i++) {
+for (var i = 0; i < 5; i++) {
   const summary: SummaryUpload = {
     BranchID: "feature/hello",
     BuildID: i + 1,
