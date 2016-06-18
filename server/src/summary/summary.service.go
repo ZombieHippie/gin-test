@@ -5,7 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// GetSummariesByBranch retrieves the the Summary by repo and pull request
+// GetSummariesByBranch retrieves the the Summary by repo and branch
 func GetSummariesByBranch(db *gorm.DB, repoID string, branchID string) []Summary {
 	var repo repo.Repository
 	db.First(&repo, repoID)

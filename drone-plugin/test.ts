@@ -1,53 +1,43 @@
 /// <reference path="./typings/index.d.ts" />
 import { UploadSummary } from "./lib-ts/app/upload-summary"
-import { Summary } from "./lib-ts/summary/summary.model"
-import { Artifact } from "./lib-ts/artifact/artifact.model"
+import { SummaryUpload } from "./lib-ts/summary/summary-upload.model"
+import { ArtifactUpload } from "./lib-ts/artifact/artifact-upload.model"
 
 const host = 'localhost:8080'
 
 import { readFileSync } from "fs"
 
 
-const lintReport: Artifact = {
-  FileContents: readFileSync('./large-image-test.jpg', 'base64'),
-  IsBinary: true,
-  FileName: "lint.jpg",
-  Data: `{
-    "error": 0,
-    "warning": 4
-  }`,
-  Label: 'lint',
-  Passed: 1, // has no significance
-  Failed: 0,
+const coverageReport: ArtifactUpload = {
+  Path:           './mocks/coverage-with-data.xml',
+  Label:          'Coverage',
+  PostProcessor:  'cobertura'
 }
-const testReport: Artifact = {
-  FileContents: readFileSync('./drone-plugin.ts', 'utf8'),
-  IsBinary: false,
-  FileName: "unit",
-  Data: `{
-    "pass": 12,
-    "fail": 0,
-    "error": 0
-
-  }`,
-  Label: 'unit',
-  Passed: 12,
-  Failed: 0,
+const lintReport: ArtifactUpload = {
+  Path:           './mocks/large-image-test.jpg',
+  Label:          'Surfing',
+  PostProcessor:  'image'
+}
+const testReport: ArtifactUpload = {
+  Path:           './drone-plugin.ts',
+  Label:          'Unit Tests',
+  PostProcessor:  'junit',
 }
 
-const arts: Artifact[] = [
+const arts: ArtifactUpload[] = [
   lintReport,
-  testReport
+  testReport,
+  coverageReport
 ]
 
 
 for (var i = 0; i < 5; i++) {
-  const summary: Summary = {
+  const summary: SummaryUpload = {
     BranchID: "feature/hello",
     BuildID: i,
-    Commit: "962c4b831f447bccd8ab4185a4898d41833d91d3",
+    Commit: i + "62c4b831f447bccd8ab4185a4898d41833d91d3",
     Author: "Cole R Lawrence <colelawr@gmail.com>",
-    Message: "Fix all golang compilation errors",
+    Message: i + " Fix all golang compilation errors",
     Artifacts: arts,
     Success: true,
     Created: new Date(),

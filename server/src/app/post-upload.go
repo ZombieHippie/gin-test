@@ -4,6 +4,7 @@ import (
 	"github.com/ZombieHippie/test-gin/server/src/repo"
 	"github.com/ZombieHippie/test-gin/server/src/shared"
 	"github.com/ZombieHippie/test-gin/server/src/summary"
+	"github.com/ZombieHippie/test-gin/server/src/upload"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -13,20 +14,20 @@ import (
 	"strconv"
 )
 
-type webhookResp struct {
+type uploadResp struct {
 	Message string
 	Summary summary.Summary
 }
 
-func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
-	var json summary.Summary
+func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
+	var json upload.SummaryUpload
 
 	c.Bind(&json) // This will infer what binder to use depending on the content-type header.
 
 	hasRepoName := !shared.IsZero(json.Repository.ID)
 
 	if !hasRepoName {
-		c.JSON(http.StatusBadRequest, webhookResp{
+		c.JSON(http.StatusBadRequest, uploadResp{
 			Message: "Error: No Repository.Name specified.",
 		})
 		return
@@ -61,7 +62,7 @@ func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 	}
 
 	if err != "" {
-		c.JSON(http.StatusBadRequest, webhookResp{
+		c.JSON(http.StatusBadRequest, uploadResp{
 			Message: "Error: " + string(err),
 		})
 		return
@@ -106,7 +107,7 @@ func postWebhook(c *gin.Context, db *gorm.DB, savedir string) {
 		status = http.StatusInternalServerError
 	}
 
-	c.JSON(status, webhookResp{
+	c.JSON(status, uploadResp{
 		Message: "Successfully created summary.",
 		Summary: result,
 	})

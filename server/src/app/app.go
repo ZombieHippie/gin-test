@@ -18,8 +18,8 @@ func Setup(db *gorm.DB, savedir string) *gin.Engine {
 	router := gin.Default()
 
 	// Create summary
-	router.POST("/summary/webhook", func(c *gin.Context) {
-		postWebhook(c, db, savedir)
+	router.POST("/summary/upload", func(c *gin.Context) {
+		postUpload(c, db, savedir)
 	})
 
 	router.GET("/summary/list", func(c *gin.Context) {

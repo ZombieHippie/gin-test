@@ -1,7 +1,7 @@
 
 interface Repository {
-  ID: string // "ZombieHippie/hello"
-  ACL: string // "user:ZombieHippie,org:DryClean"
+  ID:     string // "ZombieHippie/hello"
+  ACL:    string // "user:ZombieHippie,org:DryClean"
   Active: boolean
 }
 

@@ -1,17 +1,16 @@
-package summary
+package upload
 
 import (
 	"github.com/ZombieHippie/test-gin/server/src/repo"
-	"github.com/jinzhu/gorm"
 	"time"
 )
 
-// Summary is a common object for reports to point at
-type Summary struct {
-	gorm.Model
+// SummaryUpload is a common object for reports to point at
+type SummaryUpload struct {
 	Repository repo.Repository
 	BranchID   string
 	BuildID    int
+	Artifacts  []ArtifactUpload
 	Commit     string
 
 	Message string
