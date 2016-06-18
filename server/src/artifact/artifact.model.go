@@ -8,7 +8,8 @@ import (
 // Artifact is created for each piece generated in a summary
 type Artifact struct {
 	gorm.Model
-	Summary       summary.Summary
+	Summary       summary.Summary `gorm:"ForeignKey:SummaryID"`
+	SummaryID     uint
 	LocalPath     string // Path located from build
 	Label         string // "Arbitrary Title"
 	PostProcessor string // "cobertura"
