@@ -11,7 +11,7 @@ export function DCLintLoader(query: {[key: string]: string }): Loader {
 
   return function (artifact: ArtifactUpload): Error {
     if (query["format"] == "tslint-prose") {
-      let file = fs.readFileSync(artifact.FullPath, 'utf8')
+      let file = fs.readFileSync(artifact.Path, 'utf8')
       let lines = file.split(/\s*\n\s*/g)
 
       // src/app/app.component.ts[66, 1]: exceeds maximum line length of 50
