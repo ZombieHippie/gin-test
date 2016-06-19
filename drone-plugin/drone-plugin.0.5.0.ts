@@ -48,7 +48,11 @@ function postSummary(vargs: PLUGIN_ENV) {
         process.exit(0)
       }
       console.log("Uploaded files:")
-      console.log(resp.Artifacts.map((art) => `  ${art.Label} (${art.Status}): ${art.Data}`).join("\n"))
+      try {
+        console.log(resp.Artifacts.map((art) => `  ${art.Label} (${art.Status}): ${art.Data}`).join("\n"))
+      } catch (err) {
+        console.log("Error:", resp)
+      }
     })
   } else {
     console.log("Parameter missing: Server host")
