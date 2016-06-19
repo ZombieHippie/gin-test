@@ -50,7 +50,7 @@ function PostComment(path: string, position: number, message: string, severity =
 
   return console.log.apply(console, ["GITHUB > "].concat([].slice.call(arguments)))
 
-
+/*
   let options: request.OptionsWithUrl = {
     url: host + endpoint,
     headers: {
@@ -70,7 +70,7 @@ function PostComment(path: string, position: number, message: string, severity =
       body = JSON.parse(body)
     } catch (err) {} // guess it wasn't json...
     callback && callback(error, body)
-  })
+  })*/
 }
 
 export { PostComment }
