@@ -16,7 +16,7 @@ export function DCLintLoader(query: {[key: string]: string }): Loader {
 
       // src/app/app.component.ts[66, 1]: exceeds maximum line length of 50
 
-      let TSLintProseRE = /^([^[])+\[(\d+), \d+\]: (.+)$/
+      let TSLintProseRE = /^([^[]+)\[(\d+), \d+\]: (.+)$/
 
       lines.forEach((line) => {
         let res = TSLintProseRE.exec(line)
