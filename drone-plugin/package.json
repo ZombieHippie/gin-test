@@ -1,7 +1,7 @@
 {
-  "name": "test-gin",
+  "name": "dryclean",
   "version": "0.0.1",
-  "description": "Reciever of Artifacts",
+  "description": "Interpretter of Artifacts",
   "main": " ",
   "scripts": {
     "postinstall": "typings install",
