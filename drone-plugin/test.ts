@@ -3,7 +3,7 @@ import { UploadSummary } from "./lib-ts/app/upload-summary"
 import { SummaryUpload } from "./lib-ts/upload/summary-upload.model"
 import { ArtifactUpload } from "./lib-ts/upload/artifact-upload.model"
 
-const host = 'localhost:8080'
+const host = 'cov.dryclean.io'
 
 import { readFileSync } from "fs"
 

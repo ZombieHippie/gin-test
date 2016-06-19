@@ -49,7 +49,10 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
   }
 
   request(requestData, (err, response, body) => {
-    handler(err, JSON.parse(body))
+    try {
+      body = JSON.parse(body)
+    } catch (err) {}
+    handler(err, body)
   })
 }
 
