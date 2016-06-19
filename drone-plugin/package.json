@@ -11,7 +11,7 @@
   "author": "Cole Lawrence",
   "license": "ISC",
   "dependencies": {
-    "drone-node": "^1.0.1",
+    "drone-node": "ZombieHippie/drone-node#f58073799cd60f4cb75acf8a18b48ef0f7374b78",
     "request": "^2.72.0",
     "shelljs": "^0.7.0",
     "ts-node": "^0.9.1",
