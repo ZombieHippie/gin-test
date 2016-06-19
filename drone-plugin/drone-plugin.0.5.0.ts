@@ -60,4 +60,5 @@ import { inspect } from "util"
 
 // gets plugin-specific parameters defined in
 // the .drone.yml file
+console.log("params: DroneParams = ", inspect(ENV, false, 8, true))
 postSummary(ENV)
