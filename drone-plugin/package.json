@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "typings install",
     "start": "ts-node drone-plugin",
-    "test": "ts-node test.ts"
+    "test": "ts-node test.ts",
+    "test-comment": "ts-node test-comment"
   },
   "author": "Cole Lawrence",
   "license": "ISC",
