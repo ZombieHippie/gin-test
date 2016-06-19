@@ -20,4 +20,4 @@ RUN npm install --unsafe-perm
 # Bundle app source
 COPY . /usr/src/app
 
-ENTRYPOINT ["/usr/src/app/node_modules/.bin/ts-node", "/usr/src/app/drone-plugin.0.5.0.ts"]
+ENTRYPOINT ["/usr/src/app/node_modules/.bin/ts-node", "/usr/src/app/drone-plugin.ts"]
