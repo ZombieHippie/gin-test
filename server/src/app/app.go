@@ -1,6 +1,8 @@
 package app
 
 import (
+	"github.com/ZombieHippie/test-gin/server/src/artifact"
+	"github.com/ZombieHippie/test-gin/server/src/repo"
 	"github.com/ZombieHippie/test-gin/server/src/summary"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -18,8 +20,8 @@ func Setup(db *gorm.DB, savedir string) *gin.Engine {
 	router := gin.Default()
 
 	// Create summary
-	router.POST("/summary/webhook", func(c *gin.Context) {
-		postWebhook(c, db, savedir)
+	router.POST("/summary/upload", func(c *gin.Context) {
+		postUpload(c, db, savedir)
 	})
 
 	router.GET("/summary/list", func(c *gin.Context) {
@@ -29,6 +31,26 @@ func Setup(db *gorm.DB, savedir string) *gin.Engine {
 			Message:   "Successfully retrieved summaries.",
 			Summaries: sums,
 			Count:     count,
+		})
+	})
+
+	router.GET("/artifact/list", func(c *gin.Context) {
+		arts, count := artifact.GetAllArtifacts(db)
+
+		c.JSON(http.StatusOK, gin.H{
+			"Message":   "Successfully retrieved artifacts.",
+			"Artifacts": arts,
+			"Count":     count,
+		})
+	})
+
+	router.GET("/repository/list", func(c *gin.Context) {
+		repos, count := repo.GetAllRepositories(db)
+
+		c.JSON(http.StatusOK, gin.H{
+			"Message":      "Successfully retrieved repositories.",
+			"Repositories": repos,
+			"Count":        count,
 		})
 	})
 

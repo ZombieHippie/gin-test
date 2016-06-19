@@ -5,12 +5,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// GetSummariesByBranch retrieves the the Summary by repo and pull request
+// GetSummariesByBranch retrieves the the Summary by repo and branch
 func GetSummariesByBranch(db *gorm.DB, repoID string, branchID string) []Summary {
 	var repo repo.Repository
 	db.First(&repo, repoID)
 
-	var sums = make([]Summary, 16)
+	var sums []Summary
 	// Latest summary
 	db.Where(&Summary{
 		BranchID:   branchID,
@@ -21,7 +21,7 @@ func GetSummariesByBranch(db *gorm.DB, repoID string, branchID string) []Summary
 
 // GetAllSummaries retrieves all the Summaries
 func GetAllSummaries(db *gorm.DB) ([]Summary, int) {
-	var sums = make([]Summary, 16)
+	var sums []Summary
 	var count int
 	db.Find(&sums).Count(&count)
 	return sums, count
