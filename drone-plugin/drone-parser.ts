@@ -12,7 +12,7 @@ interface VEnv {
 interface VFile {
   path:           string // "stats.json", "coverage/Phantom*/index.html"
   label:          string // "webpack", "coverage"
-  postprocessor?: string // "cobertura", "codestyle", etc
+  loader?: string // "cobertura", "codestyle", etc
 }
 
 

@@ -34,11 +34,12 @@ interface CommentPayload {
   position: number, // Line index in the diff to comment on.
 }
 
-const botkey = process.env.PLUGIN_BOT
+const botkey = process.env.PLUGIN_GITHUB_BOT_TOKEN
+const botusername = process.env.PLUGIN_GITHUB_BOT_USERNAME
 const sha = ENV.DRONE_COMMIT
 const repo = ENV.DRONE_REPO
 
-const host = `https://dryclean-bot:${botkey}@api.github.com`
+const host = `https://${botusername}:${botkey}@api.github.com`
 const endpoint = `/repos/${repo}/commits/${sha}/comments`
 
 const emoji = [
@@ -46,8 +47,10 @@ const emoji = [
 ]
 
 function PostComment(path: string, position: number, message: string, severity = 1, callback: (err, response) => any = null) {
-  console.log(endpoint)
-  console.log(botkey)
+
+  return console.log.apply(console, ["GITHUB > "].concat([].slice.call(arguments)))
+
+
   let options: request.OptionsWithUrl = {
     url: host + endpoint,
     headers: {

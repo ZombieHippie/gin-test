@@ -10,6 +10,9 @@ import { UploadSummary } from "./lib-ts/app/upload-summary"
 import { SummaryUpload } from "./lib-ts/upload/summary-upload.model"
 import { ArtifactUpload } from "./lib-ts/upload/artifact-upload.model"
 
+
+import { GetLoader } from "./loaders/get-loader.function"
+
 import { ENV, PLUGIN_ENV, VFile } from "./drone-parser"
 
 function postSummary(vargs: PLUGIN_ENV) {
@@ -21,7 +24,7 @@ function postSummary(vargs: PLUGIN_ENV) {
         Label:          file.label,
         LocalPath:      file.path,
         Path:           fullpath,
-        PostProcessor:  file.postprocessor,
+        PostProcessor:  file.loader,
       }
     })
 
@@ -40,6 +43,17 @@ function postSummary(vargs: PLUGIN_ENV) {
         Active: true
       }
     }
+
+    // apply loaders
+    arts.forEach((art) => {
+      let loader = GetLoader(art.PostProcessor)
+      if (loader != null) {
+        let err = loader(art)
+        if (err) {
+          console.error(`Error with loader(${art.PostProcessor}) on ${art.FullPath}: `, err)
+        }
+      }
+    })
 
     UploadSummary(vargs.PLUGIN_HOST, vargs.PLUGIN_AUTH, summary, (err, resp) => {
       if (err) {
