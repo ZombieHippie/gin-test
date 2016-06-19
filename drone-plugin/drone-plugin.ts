@@ -1,5 +1,4 @@
 /// <reference path="./typings/index.d.ts" />
-/// <reference path="./drone-node.d.ts" />
 
 import shelljs = require('shelljs')
 
