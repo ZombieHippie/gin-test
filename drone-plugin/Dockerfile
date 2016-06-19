@@ -13,8 +13,8 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package.json /usr/src/app/
-COPY typings.json /usr/src/app/
+ADD package.json /usr/src/app/
+ADD typings.json /usr/src/app/
 RUN npm install --unsafe-perm
 
 # Bundle app source
