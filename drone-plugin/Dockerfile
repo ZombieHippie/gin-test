@@ -9,15 +9,15 @@ RUN apk update && \
     /var/cache/apk/*
 
 # Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /dryclean
+WORKDIR /dryclean
 
 # Install app dependencies
-ADD package.json /usr/src/app/
-ADD typings.json /usr/src/app/
+ADD package.json /dryclean/
+ADD typings.json /dryclean/
 RUN npm install --unsafe-perm
 
 # Bundle app source
-COPY . /usr/src/app
+COPY . /dryclean
 
-ENTRYPOINT ["/usr/src/app/node_modules/.bin/ts-node", "/usr/src/app/drone-plugin.ts"]
+ENTRYPOINT ["/dryclean/node_modules/.bin/ts-node", "/dryclean/drone-plugin.ts"]
