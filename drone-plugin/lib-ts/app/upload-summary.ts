@@ -34,7 +34,11 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
     if (artUpload.FullPath == null || artUpload.FullPath.length === 0) {
       artUpload.FullPath = artUpload.Path
     }
-    uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.FullPath)
+    try {
+      uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.FullPath)
+    } catch (err) {
+      console.error(`Error creating file stream for ${artUpload.FullPath}!`)
+    }
   })
 
   uploadFiles['SummaryUpload'] = JSON.stringify(summary)
