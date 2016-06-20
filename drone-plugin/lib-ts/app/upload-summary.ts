@@ -45,10 +45,10 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
         console.log("Found directory to upload, uploading as zip")
         let zippedfilename = artUpload.Path.replace(/[^\w\-]+/g, '-')
         zippedfilename = ('artifact-' + zippedfilename).replace(/\-+/g, '-')
-        addZipToQueue(artUpload.Path, zippedfilename + '.zip')
+        addZipToQueue(artUpload.Path, zippedfilename + '.zip', artUpload.FormKey)
         artUpload.Archived = true
       } else {
-        uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.Path)
+        uploadFiles[artUpload.FormKey] = fs.createReadStream(artUpload.Path)
       }
     } catch (err) {
       console.error(`Error creating file stream for ${artUpload.Path}!`)
@@ -61,7 +61,7 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
   // give a quick check just in case there were no directories to upload
   checkFinishedUploading()
 
-  function addZipToQueue (src, dest) {
+  function addZipToQueue (src, dest, formKey: string) {
     zipsToUpload += 1
     zipFolder(src, dest, function (err) {
       if (err) {
@@ -69,7 +69,7 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
       } else {
         console.log("Success writing zip file")
         // Create the read stream for the form
-        uploadFiles[src] = fs.createReadStream(dest)
+        uploadFiles[formKey] = fs.createReadStream(dest)
       }
       zipsToUpload--
       checkFinishedUploading()

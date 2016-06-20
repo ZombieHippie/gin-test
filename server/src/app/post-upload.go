@@ -53,8 +53,7 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 
 	// Save files if length longer than 255 chars
 	for _, art := range sumUp.Artifacts {
-
-		file, header, err := c.Request.FormFile(art.Path)
+		file, header, err := c.Request.FormFile(art.FormKey)
 		filename := header.Filename
 		log.Println("Found file:", art.Path, filename)
 		if err != nil {

@@ -21,7 +21,7 @@ import { ENV, PLUGIN_ENV, VFile } from "./drone-parser"
 
 function postSummary(vargs: PLUGIN_ENV) {
   if (vargs.PLUGIN_HOST) {
-    const arts = vargs.PLUGIN_FILES.map<ArtifactUpload>((file: VFile) => {
+    const arts = vargs.PLUGIN_FILES.map<ArtifactUpload>((file: VFile, index) => {
       // cwd is at the route of the project
       let fullpath = shelljs.ls(file.path)[0]
       return {
@@ -29,6 +29,7 @@ function postSummary(vargs: PLUGIN_ENV) {
         LocalPath:      file.path,
         Path:           fullpath,
         PostProcessor:  file.loader,
+        FormKey:        'file-' + index
       }
     })
 
