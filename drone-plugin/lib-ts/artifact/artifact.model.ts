@@ -3,12 +3,13 @@ import { Summary } from "../summary/summary.model"
 
 interface Artifact {
   Summary:       Summary
+	SummaryID:     number
+	LocalPath:     string // Path located from build
+	Label:         string // "Arbitrary Title"
+	PostProcessor: string // "cobertura"
   Path:          string // /data/{repo}/{branch}/{build number}/{file path}
-  FileType:      string // "xml", "json", "html", "directory", etc
-  PostProcessor: string // "cobertura"
-  Data?:         string // cobertura-output-data
-  Label:         string // "Arbitrary title"
-  Status:        string // "pass", "fail", "error", "warn"
+	Data:          string // Some JSON formatted data?
+	Status:        string // "pass", "fail", "error", "warn"
 }
 
 export { Artifact }
