@@ -3,7 +3,7 @@ import { UploadSummary } from "./lib-ts/app/upload-summary"
 import { SummaryUpload } from "./lib-ts/upload/summary-upload.model"
 import { ArtifactUpload } from "./lib-ts/upload/artifact-upload.model"
 
-const host = 'cov.dryclean.io'
+const host = 'localhost:8080'
 
 import { readFileSync } from "fs"
 
@@ -18,6 +18,11 @@ const lintReport: ArtifactUpload = {
   Label:          'Surfing.jpg',
   PostProcessor:  'image'
 }
+const testReportStatic: ArtifactUpload = {
+  Path:           './mocks/report-static-site',
+  Label:          'Test Runner',
+  PostProcessor:  'arbitrary'
+}
 const testReport: ArtifactUpload = {
   Path:           './drone-plugin.ts',
   Label:          'Unit Tests.ts',
@@ -25,13 +30,14 @@ const testReport: ArtifactUpload = {
 }
 
 const arts: ArtifactUpload[] = [
-  lintReport,
-  testReport,
-  coverageReport
+  testReportStatic,
+  //lintReport,
+  //testReport,
+  //coverageReport,
 ]
 
 
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 1; i++) {
   const summary: SummaryUpload = {
     BranchID: "feature/hello",
     BuildID: i + 1,

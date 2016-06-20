@@ -2,9 +2,15 @@
 import http = require("http")
 import request = require("request")
 import fs = require('fs')
+import path = require('path')
 import { Summary } from "../summary/summary.model"
 import { Artifact } from "../artifact/artifact.model"
 import { SummaryUpload } from "../upload/summary-upload.model"
+
+interface ZipFolder {
+  (srcFolder: string, zipFilePath: string, callback: (err) => any): any
+}
+const zipFolder = require('zip-folder') as ZipFolder
 
 export interface UploadSummaryResponse {
 	Message: string
@@ -29,9 +35,21 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
 
   let uploadFiles: Attachments = {}
 
+  let zipsToUpload = 0
+
   summary.Artifacts.forEach((artUpload) => {
     try {
-      uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.Path)
+      let stats = fs.statSync(artUpload.Path)
+      // if directory upload zip
+      if (stats.isDirectory()) {
+        console.log("Found directory to upload, uploading as zip")
+        let zippedfilename = artUpload.Path.replace(/[^\w\-]+/g, '-')
+        zippedfilename = ('artifact-' + zippedfilename).replace(/\-+/g, '-')
+        addZipToQueue(artUpload.Path, zippedfilename + '.zip')
+        artUpload.Archived = true
+      } else {
+        uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.Path)
+      }
     } catch (err) {
       console.error(`Error creating file stream for ${artUpload.Path}!`)
     }
@@ -39,21 +57,45 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
 
   uploadFiles['SummaryUpload'] = JSON.stringify(summary)
 
-  let requestData: request.Options = {
-    url: protocol + host + uploadPath,
-    method: 'POST',
-    headers: {
-      'Authorization-Key': auth,
-    },
-    formData: uploadFiles,
+
+  // give a quick check just in case there were no directories to upload
+  checkFinishedUploading()
+
+  function addZipToQueue (src, dest) {
+    zipsToUpload += 1
+    zipFolder(src, dest, function (err) {
+      if (err) {
+        console.error(`Error writing zip file!`)
+      } else {
+        console.log("Success writing zip file")
+        // Create the read stream for the form
+        uploadFiles[src] = fs.createReadStream(dest)
+      }
+      zipsToUpload--
+      checkFinishedUploading()
+    })
   }
 
-  request(requestData, (err, response, body) => {
-    try {
-      body = JSON.parse(body)
-    } catch (err) {}
-    handler(err, body)
-  })
+  // if no zip files to wait on, finish uploading
+  function checkFinishedUploading (force = false) {
+    if (zipsToUpload === 0 || force) {
+      let requestData: request.Options = {
+        url: protocol + host + uploadPath,
+        method: 'POST',
+        headers: {
+          'Authorization-Key': auth,
+        },
+        formData: uploadFiles,
+      }
+
+      request(requestData, (err, response, body) => {
+        try {
+          body = JSON.parse(body)
+        } catch (err) {}
+        handler(err, body)
+      })
+    }
+  }
 }
 
 export { UploadSummary }
