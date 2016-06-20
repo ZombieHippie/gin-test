@@ -55,7 +55,7 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 	for _, art := range sumUp.Artifacts {
 		file, header, err := c.Request.FormFile(art.FormKey)
 		if err != nil {
-			log.Fatalln("Fatal form file", err)
+			log.Panicln("Fatal form file", err)
 			continue
 		}
 		filename := header.Filename
@@ -81,7 +81,7 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 		}
 		upArt, err := art.SaveUpload(filepath, file)
 		if err != nil {
-			log.Fatalln("Error on save upload", err)
+			log.Panicln("Error on save upload", err)
 		} else {
 			uploadedArtifacts = append(uploadedArtifacts, upArt)
 		}
