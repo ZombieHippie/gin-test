@@ -9,6 +9,11 @@ import { UploadSummary } from "./lib-ts/app/upload-summary"
 import { SummaryUpload } from "./lib-ts/upload/summary-upload.model"
 import { ArtifactUpload } from "./lib-ts/upload/artifact-upload.model"
 
+import { LoadSettings } from './load-settings.function'
+
+let settings = LoadSettings()
+import { PostComment } from "./lib-ts/github/post-comment.function"
+
 
 import { GetLoader } from "./loaders/get-loader.function"
 
@@ -42,7 +47,7 @@ function postSummary(vargs: PLUGIN_ENV) {
         Active: true
       }
     }
-/*
+
     // apply loaders
     arts.forEach((art) => {
       let loader = GetLoader(art.PostProcessor)
@@ -53,7 +58,7 @@ function postSummary(vargs: PLUGIN_ENV) {
         }
       }
     })
-*/
+
     UploadSummary(vargs.PLUGIN_HOST, vargs.PLUGIN_AUTH, summary, (err, resp) => {
       if (err) {
         console.error("Error occurred while posting artifacts!", err)
@@ -64,19 +69,19 @@ function postSummary(vargs: PLUGIN_ENV) {
       try {
         console.log(resp.Artifacts.map((art) => `  ${art.Label} (${art.Status}): ${art.Data}`).join("\n"))
 
+        let postBody = ""
+
         resp.Artifacts.forEach((art) => {
 
           if (art.PostProcessor.indexOf("github-link") != -1) {
-            const botkey = process.env.PLUGIN_GITHUB_BOT_TOKEN
-            const botusername = process.env.PLUGIN_GITHUB_BOT_USERNAME
-            const sha = ENV.DRONE_COMMIT
-            const repo = ENV.DRONE_REPO
-            let message = `
-              http://${vargs.PLUGIN_HOST}/${art.Path}
-            `
+            postBody += `[**${art.Label}**](http://${vargs.PLUGIN_HOST}/${art.Path})`
           }
 
         })
+
+        if (postBody.length > 0) {
+          Post("## Summary\n" + postBody)
+        }
 
       } catch (err) {
         console.log("Error:", resp)
@@ -92,5 +97,15 @@ import { inspect } from "util"
 
 // gets plugin-specific parameters defined in
 // the .drone.yml file
-console.log("params: DroneParams = ", inspect(ENV, false, 8, true))
+// console.log("params: DroneParams = ", inspect(ENV, false, 8, true))
 postSummary(ENV)
+
+function Post(message: string) {
+  PostComment(settings.github_user_handle, settings.github_user_password,
+    message, ENV.DRONE_REPO, ENV.DRONE_COMMIT,
+    null, null, (err, resp) => {
+      console.log("POST v ERR >", err)
+      console.log(resp)
+    })
+}
+

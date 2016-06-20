@@ -9,7 +9,8 @@ import { LoadSettings } from './load-settings.function'
 let settings = LoadSettings()
 
 Post(`
-http://cov.dryclean.io/data
+# Arbitrary Label
+http://cov.dryclean.io/data/ZombieHippie/test-gin/1/Test-Runner/
 `)
 
 

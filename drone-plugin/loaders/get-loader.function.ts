@@ -9,7 +9,7 @@ import querystring = require('querystring')
 import { DCLintLoader } from './dclint.loader'
 
 const loaders: {[key: string]: (query: {[key: string]: string }) => Loader} = {
-  "dclint": DCLintLoader
+  "dc-lint": DCLintLoader
 }
 
 export function GetLoader (loaderstring: string): Loader {

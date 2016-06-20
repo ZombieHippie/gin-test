@@ -22,7 +22,8 @@ export function DCLintLoader(query: {[key: string]: string }): Loader {
         let res = TSLintProseRE.exec(line)
         if (res != null) {
           let [_, filePath, pos, comment] = res
-          PostComment(filePath, parseInt(pos), comment, 1)
+          console.log("TSLINT:", filePath, pos, comment)
+          // PostComment(filePath, parseInt(pos), comment, 1)
         }
       })
     } else {
