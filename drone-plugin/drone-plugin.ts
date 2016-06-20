@@ -49,7 +49,7 @@ function postSummary(vargs: PLUGIN_ENV) {
       if (loader != null) {
         let err = loader(art)
         if (err) {
-          console.error(`Error with loader(${art.PostProcessor}) on ${art.FullPath}: `, err)
+          console.error(`Error with loader(${art.PostProcessor}) on ${art.Path}: `, err)
         }
       }
     })
