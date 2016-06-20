@@ -79,7 +79,7 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 				break
 			}
 		}
-		upArt, err := art.SaveUpload(filepath, file, false)
+		upArt, err := art.SaveUpload(filepath, file)
 		if err != nil {
 			log.Fatalln("Error on save upload", err)
 		} else {

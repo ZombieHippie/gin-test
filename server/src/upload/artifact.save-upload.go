@@ -11,7 +11,7 @@ import (
 
 // SaveUpload saves the ArtifactUpload to a location on the harddisk and
 // creates an Artifact in the database
-func (upload *ArtifactUpload) SaveUpload(destPath string, data io.Reader, zipped bool) (artifact.Artifact, error) {
+func (upload *ArtifactUpload) SaveUpload(destPath string, data io.Reader) (artifact.Artifact, error) {
 	art := artifact.Artifact{
 		Path:          destPath,
 		LocalPath:     upload.Path,
@@ -40,7 +40,8 @@ func (upload *ArtifactUpload) SaveUpload(destPath string, data io.Reader, zipped
 		return art, err
 	}
 
-	if zipped {
+	// handle zip files
+	if upload.Archived {
 		zippedFileName := art.Path + ".zip"
 		if err := os.Rename(art.Path, zippedFileName); err != nil {
 			log.Fatalln("error renaming Artifact to *.zip file.", err)

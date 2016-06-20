@@ -5,4 +5,5 @@ type ArtifactUpload struct {
 	Path          string // Path local to build
 	Label         string // "Arbitrary Title"
 	PostProcessor string // "cobertura:xml" | "codestyle" | etc seek docs
+	Archived      bool   // Whether we are recieving a zip archive of files
 }
