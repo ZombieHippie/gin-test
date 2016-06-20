@@ -43,6 +43,8 @@ function postSummary(vargs: PLUGIN_ENV) {
       }
     }
 
+/*// Debating putting all loader stuff on the server side.
+
     // apply loaders
     arts.forEach((art) => {
       let loader = GetLoader(art.PostProcessor)
@@ -53,6 +55,7 @@ function postSummary(vargs: PLUGIN_ENV) {
         }
       }
     })
+*/
 
     UploadSummary(vargs.PLUGIN_HOST, vargs.PLUGIN_AUTH, summary, (err, resp) => {
       if (err) {
