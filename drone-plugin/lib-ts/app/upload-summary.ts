@@ -30,14 +30,10 @@ function UploadSummary(host: string, auth: string, summary: SummaryUpload, handl
   let uploadFiles: Attachments = {}
 
   summary.Artifacts.forEach((artUpload) => {
-    // Note that we read from FullPath here
-    if (artUpload.FullPath == null || artUpload.FullPath.length === 0) {
-      artUpload.FullPath = artUpload.Path
-    }
     try {
-      uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.FullPath)
+      uploadFiles[artUpload.Path] = fs.createReadStream(artUpload.Path)
     } catch (err) {
-      console.error(`Error creating file stream for ${artUpload.FullPath}!`)
+      console.error(`Error creating file stream for ${artUpload.Path}!`)
     }
   })
 
