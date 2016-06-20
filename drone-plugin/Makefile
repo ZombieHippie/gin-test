@@ -1,6 +1,6 @@
 .PHONY: all install test docker
 
-IMAGE ?= colelawr/drone-artsy
+IMAGE ?= colelawr/drone-dryclean
 
 all: install test
 
