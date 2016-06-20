@@ -55,12 +55,13 @@ func postUpload(c *gin.Context, db *gorm.DB, savedir string) {
 	for _, art := range sumUp.Artifacts {
 
 		file, header, err := c.Request.FormFile(art.Path)
-		defer file.Close()
 		filename := header.Filename
 		log.Println("Found file:", art.Path, filename)
 		if err != nil {
 			log.Fatalln("Fatal form file", err)
+			continue
 		}
+		defer file.Close()
 
 		// Make sure that this is not the same file
 		r := regexp.MustCompile(`[^\w\-\.]+`)
