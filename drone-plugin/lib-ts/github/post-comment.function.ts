@@ -34,22 +34,17 @@ interface CommentPayload {
   position: number, // Line index in the diff to comment on.
 }
 
-const botkey = process.env.PLUGIN_GITHUB_BOT_TOKEN
-const botusername = process.env.PLUGIN_GITHUB_BOT_USERNAME
-const sha = ENV.DRONE_COMMIT
-const repo = ENV.DRONE_REPO
-
-const host = `https://${botusername}:${botkey}@api.github.com`
-const endpoint = `/repos/${repo}/commits/${sha}/comments`
-
 const emoji = [
   ":hocho:"
 ]
 
-function PostComment(path: string, position: number, message: string, severity = 1, callback: (err, response) => any = null) {
+function PostComment(botusername: string, botpassword: string, message: string,
+                     repo: string,        sha: string,         path?: string,
+                     position?: number,   callback: (err, response) => any = null) {
 
-  return console.log.apply(console, ["GITHUB > "].concat([].slice.call(arguments)))
-/*
+  const host = `https://${botusername}:${botpassword}@api.github.com`
+  const endpoint = `/repos/${repo}/commits/${sha}/comments`
+
   let options: request.OptionsWithUrl = {
     url: host + endpoint,
     headers: {
@@ -57,7 +52,7 @@ function PostComment(path: string, position: number, message: string, severity =
     },
     method: 'POST',
     json: {
-      body: `${emoji[severity] || ":tshirt:"} ${message}`,
+      body: message,
       path: path,
       position: position,
     },
@@ -69,7 +64,7 @@ function PostComment(path: string, position: number, message: string, severity =
       body = JSON.parse(body)
     } catch (err) {} // guess it wasn't json...
     callback && callback(error, body)
-  })*/
+  })
 }
 
 export { PostComment }

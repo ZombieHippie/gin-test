@@ -1,5 +1,13 @@
 Sample
 
+In this directory,
+
+make a `./settings.json` file for your own image, and then execute:
+```bash
+docker build --rm -t colelawr/drone-dryclean .
+```
+> (don't forget that last period indicating this directory)
+
 ```yaml
 
 host: cov.dryclean.io
@@ -8,15 +16,15 @@ loadersDir: ./loaders
 files:
     -
         path: ./coverage/cobertura.xml
-        label: cover/cobertura
-        filename: cover.xml
-        binary: false
+        label: Code Coverage
+        loader: "dc-coverage"
     -
-        path: ./report/lint.xml
-        label: lint/codestyle
-        filename: lint.xml
+        path: ./report/tslint.txt
+        label: Typescript Linting
+        loader: "dc-lint?format=tslint-prose"
+
     -
         path: ./report/mocha.xml
-        label: test/junit
-        filename: test.xml
+        label: Mocha Tests
+        loader: "junit"
   ```

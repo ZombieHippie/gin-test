@@ -42,9 +42,7 @@ function postSummary(vargs: PLUGIN_ENV) {
         Active: true
       }
     }
-
-/*// Debating putting all loader stuff on the server side.
-
+/*
     // apply loaders
     arts.forEach((art) => {
       let loader = GetLoader(art.PostProcessor)
@@ -56,7 +54,6 @@ function postSummary(vargs: PLUGIN_ENV) {
       }
     })
 */
-
     UploadSummary(vargs.PLUGIN_HOST, vargs.PLUGIN_AUTH, summary, (err, resp) => {
       if (err) {
         console.error("Error occurred while posting artifacts!", err)
@@ -66,6 +63,21 @@ function postSummary(vargs: PLUGIN_ENV) {
       console.log("Uploaded files:")
       try {
         console.log(resp.Artifacts.map((art) => `  ${art.Label} (${art.Status}): ${art.Data}`).join("\n"))
+
+        resp.Artifacts.forEach((art) => {
+
+          if (art.PostProcessor.indexOf("github-link") != -1) {
+            const botkey = process.env.PLUGIN_GITHUB_BOT_TOKEN
+            const botusername = process.env.PLUGIN_GITHUB_BOT_USERNAME
+            const sha = ENV.DRONE_COMMIT
+            const repo = ENV.DRONE_REPO
+            let message = `
+              http://${vargs.PLUGIN_HOST}/${art.Path}
+            `
+          }
+
+        })
+
       } catch (err) {
         console.log("Error:", resp)
       }
