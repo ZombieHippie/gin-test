@@ -15,6 +15,6 @@ body {
 .passed h1::after {
   content: "M";
   margin-left: .1em;
-  background: url(white_check_mark.png) no-repeat center;
+  background: url(images/white_check_mark.png) no-repeat center;
   color: transparent;
 }
