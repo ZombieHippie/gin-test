@@ -1,0 +1,7 @@
+{
+  "provider": "github",
+  "github_client_id": "APPLICATION_CLIENT_ID",
+  "github_client_secret": "APPLICATION_CLIENT_SECRET",
+  "github_user_handle": "Username",
+  "github_user_password": "Password or Token"
+}

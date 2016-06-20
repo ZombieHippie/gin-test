@@ -31,13 +31,13 @@ const testReport: ArtifactUpload = {
 
 const arts: ArtifactUpload[] = [
   testReportStatic,
-  //lintReport,
-  //testReport,
-  //coverageReport,
+  lintReport,
+  testReport,
+  coverageReport,
 ]
 
 
-for (var i = 0; i < 1; i++) {
+for (var i = 0; i < 5; i++) {
   const summary: SummaryUpload = {
     BranchID: "feature/hello",
     BuildID: i + 1,

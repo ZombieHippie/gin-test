@@ -16,5 +16,4 @@ debug
 data
 
 # built go files
-server/server
 server/dryclean-host
