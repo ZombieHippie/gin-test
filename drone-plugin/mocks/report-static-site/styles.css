@@ -1,0 +1,20 @@
+body {
+  margin: 0 2em;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+.passed {
+  margin-top: 20vh;
+  font-size: 3em;
+  text-align: center;
+}
+
+.passed h1 {
+  color: #75a843;
+}
+.passed h1::after {
+  content: "M";
+  margin-left: .1em;
+  background: url(white_check_mark.png) no-repeat center;
+  color: transparent;
+}
